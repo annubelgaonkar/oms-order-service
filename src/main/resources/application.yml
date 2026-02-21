@@ -1,0 +1,23 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: oms-order-service
+
+  datasource:
+    url: spring.application.name=oms-order-service
+    username: postgres
+    password: admin
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+services:
+  product:
+    url: http://localhost:8082
+  inventory:
+    url: http://localhost:8083
+
