@@ -30,9 +30,12 @@ public class Order {
     private LocalDateTime createdAt;
 
     @PrePersist
-    @PreUpdate
     public void prePersist(){
         this.createdAt = LocalDateTime.now();
-        this.status = OrderStatus.CREATED;
+
+        if(this.status == null){
+            this.status = OrderStatus.CREATED;
+        }
+
     }
 }

@@ -6,7 +6,7 @@ spring:
     name: oms-order-service
 
   datasource:
-    url: spring.application.name=oms-order-service
+    url: jdbc:postgresql://localhost:5436/oms_order_db
     username: postgres
     password: admin
 
