@@ -3,6 +3,7 @@ package dev.anuradha.omsorderservice.service;
 import dev.anuradha.omsorderservice.client.InventoryClient;
 import dev.anuradha.omsorderservice.client.ProductClient;
 import dev.anuradha.omsorderservice.dto.CreateOrderRequest;
+import dev.anuradha.omsorderservice.dto.OrderCreatedEvent;
 import dev.anuradha.omsorderservice.dto.OrderItemRequest;
 import dev.anuradha.omsorderservice.dto.ProductResponse;
 import dev.anuradha.omsorderservice.model.Order;
@@ -26,6 +27,7 @@ public class OrderServiceImpl implements OrderService{
     private final OrderItemRepository orderItemRepository;
     private final ProductClient productClient;
     private final InventoryClient inventoryClient;
+    private final OrderEventPublisher eventPublisher;
 
     @Transactional
     @Override
@@ -78,6 +80,16 @@ public class OrderServiceImpl implements OrderService{
 
             orderItemRepository.save(orderItem);
         }
+
+        //publish event
+        OrderCreatedEvent event = OrderCreatedEvent.builder()
+                        .orderId(savedOrder.getId())
+                        .userId(savedOrder.getUserId())
+                        .amount(savedOrder.getTotalAmount())
+                        .build();
+
+        eventPublisher.publishOrderCreated(event);
+
         log.info("Order created successfully: {}" + savedOrder.getId());
 
         return savedOrder;

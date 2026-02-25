@@ -21,3 +21,15 @@ services:
   inventory:
     url: http://localhost:8083
 
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+      credentials:
+        access-key: test
+        secret-key: test
+      sqs:
+        endpoint: http://sqs.us-east-1.localhost.localstack.cloud:4566
+
+sqs:
+  order-created-queue: order-created-queue
