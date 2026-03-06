@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class OrderServiceImpl implements OrderService{
+    public class OrderServiceImpl implements OrderService{
 
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
@@ -81,15 +81,20 @@ public class OrderServiceImpl implements OrderService{
             orderItemRepository.save(orderItem);
         }
 
-        OrderCreatedEvent event = OrderCreatedEvent.builder()
-                        .orderId(savedOrder.getId())
-                        .userId(savedOrder.getUserId())
-                        .amount(savedOrder.getTotalAmount())
-                        .build();
+        for (OrderItemRequest item : orderRequest.getItems()) {
 
-        eventPublisher.publishOrderCreated(event);
+            OrderCreatedEvent event = OrderCreatedEvent.builder()
+                    .orderId(savedOrder.getId())
+                    .userId(savedOrder.getUserId())
+                    .productId(item.getProductId())
+                    .quantity(item.getQuantity())
+                    .amount(savedOrder.getTotalAmount())
+                    .build();
 
-        log.info("Order created successfully: {}" + savedOrder.getId());
+            eventPublisher.publishOrderCreated(event);
+        }
+
+        log.info("Order created successfully: {}", savedOrder.getId());
 
         return savedOrder;
     }
