@@ -6,7 +6,7 @@ spring:
     name: oms-order-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5436/oms_order_db
+    url: jdbc:postgresql://postgres-order:5432/oms_order_db
     username: postgres
     password: admin
 
@@ -26,13 +26,13 @@ spring:
         access-key: test
         secret-key: test
       sqs:
-        endpoint: http://localhost:4566
+        endpoint: http://localstack:4566
 
 services:
   product:
-    url: http://localhost:8082
+    url: http://oms-product-service:8082
   inventory:
-    url: http://localhost:8083
+    url: http://oms-inventory-service:8083
 
 
 
